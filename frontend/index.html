@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BorrowBox — Your next great read is already waiting</title>
+<meta name="description" content="BorrowBox is a modern library platform for browsing, borrowing, and returning books online." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <svg class="logo-mark" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5C2 3.7 2.7 3 3.5 3H10a2 2 0 0 1 2 2v15a1.5 1.5 0 0 0-1.5-1.5H2Z"/><path d="M22 4.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v15a1.5 1.5 0 0 1 1.5-1.5H22Z"/></svg>
+      BorrowBox
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="books.html">Explore Books</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+    <div class="nav-actions"></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <span class="eyebrow">A modern library, always open</span>
+      <h1>Your next great read is already waiting.</h1>
+      <p class="lede">
+        BorrowBox brings the library card catalog into the browser — search a real shelf of
+        books, reserve a copy in seconds, and track every due date without spreadsheets or fines you forgot about.
+      </p>
+      <div class="hero-actions">
+        <a href="books.html" class="btn btn-primary">Explore Books</a>
+        <a href="register.html" class="btn btn-ghost">Get Started</a>
+      </div>
+      <div class="hero-meta">
+        <div><strong>1,200+</strong><span>Books</span></div>
+        <div><strong>500+</strong><span>Readers</span></div>
+        <div><strong>4.8/5</strong><span>Rating</span></div>
+        <div><strong>24/7</strong><span>Access</span></div>
+      </div>
+    </div>
+
+    <div class="catalog-card" aria-hidden="true">
+      <div class="catalog-top">
+        <span class="catalog-label">Catalog · No. 0148</span>
+        <span class="stamp">On Shelf</span>
+      </div>
+      <div class="catalog-row">
+        <div>
+          <div class="title">Atomic Habits</div>
+          <div class="author">James Clear</div>
+        </div>
+        <span class="badge">Available</span>
+      </div>
+      <div class="catalog-row">
+        <div>
+          <div class="title">Deep Work</div>
+          <div class="author">Cal Newport</div>
+        </div>
+        <span class="badge">Available</span>
+      </div>
+      <div class="catalog-row">
+        <div>
+          <div class="title">Clean Code</div>
+          <div class="author">Robert C. Martin</div>
+        </div>
+        <span class="badge">Available</span>
+      </div>
+      <div class="catalog-footer">
+        <span>Due back in 14 days</span>
+        <span>BorrowBox Library</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="stats-strip">
+  <div class="container">
+    <div class="stat"><strong>1,200+</strong><span>Books</span></div>
+    <div class="stat"><strong>500+</strong><span>Readers</span></div>
+    <div class="stat"><strong>4.8/5</strong><span>Rating</span></div>
+    <div class="stat"><strong>24/7</strong><span>Access</span></div>
+  </div>
+</section>
+
+<section class="section" id="featured">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">On the shelf this week</span>
+      <h2>Featured books</h2>
+      <p>A rotating shortlist pulled straight from the live catalog — availability updates the moment someone borrows or returns a copy.</p>
+    </div>
+    <div class="book-grid" id="featured-books">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark" id="how-it-works">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">The process</span>
+      <h2 style="color:var(--paper);">How BorrowBox works</h2>
+      <p>Four steps, no paperwork, no queue at a front desk.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Create account</h3>
+        <p>Register with your name, email, and a password — takes under a minute.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Choose a book</h3>
+        <p>Search or filter the catalog by title, author, or category to find your next read.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Borrow</h3>
+        <p>Reserve your copy instantly. It's yours for 14 days from the moment you confirm.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Return</h3>
+        <p>Mark it returned from your dashboard when you're done — the copy goes right back on the shelf.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Browse by shelf</span>
+      <h2>Categories</h2>
+      <p>Six sections cover everything from a quiet evening novel to a technical deep-dive.</p>
+    </div>
+    <div class="category-grid">
+      <a class="category-card" href="books.html?category=Fiction"><h4>Fiction</h4><span>Explore →</span></a>
+      <a class="category-card" href="books.html?category=Technology"><h4>Technology</h4><span>Explore →</span></a>
+      <a class="category-card" href="books.html?category=Business"><h4>Business</h4><span>Explore →</span></a>
+      <a class="category-card" href="books.html?category=Self%20Development"><h4>Self Development</h4><span>Explore →</span></a>
+      <a class="category-card" href="books.html?category=Science"><h4>Science</h4><span>Explore →</span></a>
+      <a class="category-card" href="books.html?category=Biography"><h4>Biography</h4><span>Explore →</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Why BorrowBox</span>
+      <h2>Built like a library, run like software</h2>
+      <p>Everything a front-desk librarian keeps in their head, made visible and searchable.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <h3>Real-time availability</h3>
+        <p>Every book card shows live copy counts, so you never reserve something that's already out.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <h3>Clear due dates</h3>
+        <p>A 14-day borrow window with color-coded reminders, from freshly borrowed to overdue.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>One catalog, always in sync</h3>
+        <p>Borrow, return, and browse — every action updates the same shared shelf instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="panel" style="display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding:40px 36px;">
+      <div>
+        <h2 style="font-size:26px;">Ready to check something out?</h2>
+        <p style="margin-top:8px; color:var(--ink-soft);">Create a free account and borrow your first book today.</p>
+      </div>
+      <a href="register.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <svg class="logo-mark" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5C2 3.7 2.7 3 3.5 3H10a2 2 0 0 1 2 2v15a1.5 1.5 0 0 0-1.5-1.5H2Z"/><path d="M22 4.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v15a1.5 1.5 0 0 1 1.5-1.5H22Z"/></svg>
+          BorrowBox
+        </a>
+        <p>A modern library platform for browsing, borrowing, and returning books online.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="books.html">All Books</a></li>
+          <li><a href="index.html#categories">Categories</a></li>
+          <li><a href="index.html#how-it-works">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Library</h5>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="borrowed.html">My Borrowed Books</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 BorrowBox Library. All rights reserved.</span>
+      <span>Built with HTML, CSS, JS, Node &amp; MongoDB.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  async function loadFeaturedBooks() {
+    const grid = document.getElementById('featured-books');
+    try {
+      const res = await api.get('/books?sort=availability');
+      const books = res.data.books.slice(0, 4);
+
+      if (books.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+            </div>
+            <h3>The shelf is empty</h3>
+            <p>No books have been added yet. Check back soon, or sign in as an admin to seed the catalog.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = books.map(bookCardHtml).join('');
+    } catch (err) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1;">
+          <div class="empty-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/></svg>
+          </div>
+          <h3>Couldn't load the catalog</h3>
+          <p>${escapeHtml(err.message)}</p>
+        </div>`;
+    }
+  }
+  loadFeaturedBooks();
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Borrowed Books — BorrowBox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <svg class="logo-mark" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5C2 3.7 2.7 3 3.5 3H10a2 2 0 0 1 2 2v15a1.5 1.5 0 0 0-1.5-1.5H2Z"/><path d="M22 4.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v15a1.5 1.5 0 0 1 1.5-1.5H22Z"/></svg>
+      BorrowBox
+    </a>
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="books.html">Explore Books</a></li>
+      <li><a href="borrowed.html" class="active">My Books</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+    <div class="nav-actions"></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main class="app-shell">
+  <div class="container">
+    <div class="page-head">
+      <span class="eyebrow">Your shelf</span>
+      <h1>My borrowed books</h1>
+      <p>Track due dates and return copies when you're finished.</p>
+    </div>
+
+    <div class="tabs" style="margin-top:24px;">
+      <button class="tab-btn active" data-filter="all">All</button>
+      <button class="tab-btn" data-filter="borrowed">Active</button>
+      <button class="tab-btn" data-filter="overdue">Overdue</button>
+      <button class="tab-btn" data-filter="returned">Returned</button>
+    </div>
+
+    <div class="borrow-list" id="borrow-list">
+      <div class="skeleton" style="height:100px;"></div>
+      <div class="skeleton" style="height:100px;"></div>
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  requireAuth();
+
+  const listEl = document.getElementById('borrow-list');
+  let allBorrows = [];
+  let activeFilter = 'all';
+
+  function classify(borrow) {
+    if (borrow.status === 'returned') return { key: 'returned', label: 'Returned', pill: 'returned' };
+    if (borrow.status === 'overdue') return { key: 'overdue', label: 'Overdue', pill: 'overdue' };
+    const daysLeft = daysBetween(borrow.dueDate, new Date());
+    if (daysLeft <= 3) return { key: 'borrowed', label: 'Due Soon', pill: 'due-soon', state: 'state-due-soon' };
+    return { key: 'borrowed', label: 'Borrowed', pill: 'borrowed', state: '' };
+  }
+
+  function borrowItemHtml(borrow) {
+    const info = classify(borrow);
+    const stateClass = info.key === 'overdue' ? 'state-overdue' : info.key === 'returned' ? 'state-returned' : (info.state || '');
+    const showReturn = borrow.status !== 'returned';
+    return `
+      <div class="borrow-item ${stateClass}" data-borrow-id="${borrow._id}">
+        <div class="mini-cover">
+          ${borrow.book && borrow.book.coverImage
+            ? `<img src="${escapeHtml(borrow.book.coverImage)}" alt="" loading="lazy">`
+            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;color:var(--forest-dark);">${escapeHtml(initials(borrow.book ? borrow.book.title : '?'))}</div>`}
+        </div>
+        <div>
+          <h4>${escapeHtml(borrow.book ? borrow.book.title : 'Unknown book')}</h4>
+          <p class="borrow-author">${escapeHtml(borrow.book ? borrow.book.author : '')}</p>
+        </div>
+        <div class="date-block"><span>Borrowed</span>${formatDate(borrow.borrowDate)}</div>
+        <div class="date-block"><span>${borrow.status === 'returned' ? 'Returned' : 'Due'}</span>${formatDate(borrow.status === 'returned' ? borrow.returnDate : borrow.dueDate)}</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="status-pill ${info.pill}">${info.label}</span>
+          ${showReturn ? `<button class="btn btn-sm btn-brown return-trigger" data-id="${borrow._id}">Return</button>` : ''}
+        </div>
+      </div>`;
+  }
+
+  function render() {
+    const filtered = activeFilter === 'all'
+      ? allBorrows
+      : allBorrows.filter((b) => classify(b).key === activeFilter);
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+          </div>
+          <h3>Nothing here yet</h3>
+          <p>${allBorrows.length === 0 ? "You haven't borrowed any books yet." : 'No books match this filter.'}</p>
+          ${allBorrows.length === 0 ? '<a href="books.html" class="btn btn-primary" style="margin-top:16px;">Browse books</a>' : ''}
+        </div>`;
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(borrowItemHtml).join('');
+  }
+
+  async function loadBorrows() {
+    try {
+      const res = await api.get('/borrow/my');
+      allBorrows = res.data.borrows;
+      render();
+    } catch (err) {
+      listEl.innerHTML = `<div class="empty-state"><h3>Couldn't load your books</h3><p>${escapeHtml(err.message)}</p></div>`;
+    }
+  }
+
+  document.querySelectorAll('.tab-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  listEl.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.return-trigger');
+    if (!btn) return;
+
+    const confirmed = await confirmDialog({
+      title: 'Return this book?',
+      message: 'This will mark the book as returned and free up a copy for other readers.',
+      confirmLabel: 'Return book',
+      danger: false,
+    });
+    if (!confirmed) return;
+
+    setButtonLoading(btn, true, 'Returning');
+    try {
+      const res = await api.post(`/borrow/${btn.dataset.id}/return`, {});
+      showToast(res.message || 'Book returned.', 'success');
+      await loadBorrows();
+    } catch (err) {
+      showToast(err.message, 'error');
+      setButtonLoading(btn, false);
+    }
+  });
+
+  loadBorrows();
+</script>
+</body>
+</html>

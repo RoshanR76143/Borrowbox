@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile — BorrowBox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <svg class="logo-mark" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5C2 3.7 2.7 3 3.5 3H10a2 2 0 0 1 2 2v15a1.5 1.5 0 0 0-1.5-1.5H2Z"/><path d="M22 4.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v15a1.5 1.5 0 0 1 1.5-1.5H22Z"/></svg>
+      BorrowBox
+    </a>
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="books.html">Explore Books</a></li>
+      <li><a href="borrowed.html">My Books</a></li>
+      <li><a href="profile.html" class="active">Profile</a></li>
+    </ul>
+    <div class="nav-actions"></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main class="app-shell">
+  <div class="container" style="max-width:640px;">
+    <div class="page-head">
+      <span class="eyebrow">Your account</span>
+      <h1>Profile</h1>
+      <p>Update your display name. Your email and role can't be changed here.</p>
+    </div>
+
+    <div class="panel" style="margin-top:24px;">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:26px;">
+        <span class="avatar" id="profile-avatar" style="width:56px;height:56px;font-size:20px;border-radius:16px;"></span>
+        <div>
+          <h2 id="profile-name" style="font-size:20px;"></h2>
+          <span class="role-pill" id="profile-role"></span>
+        </div>
+      </div>
+
+      <form id="profile-form">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" required />
+          <span class="error-msg"></span>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" disabled style="opacity:0.6; cursor:not-allowed;" />
+          <span class="field-hint">Email cannot be changed.</span>
+        </div>
+        <div class="field">
+          <label for="role">Role</label>
+          <input type="text" id="role" name="role" disabled style="opacity:0.6; cursor:not-allowed; text-transform:capitalize;" />
+          <span class="field-hint">Only an administrator can change account roles.</span>
+        </div>
+        <div class="field">
+          <label>Account created</label>
+          <input type="text" id="created" disabled style="opacity:0.6; cursor:not-allowed;" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:8px;">Save changes</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  requireAuth();
+
+  const form = document.getElementById('profile-form');
+
+  async function loadProfile() {
+    try {
+      const res = await api.get('/auth/me');
+      const user = res.data.user;
+      document.getElementById('profile-avatar').textContent = initials(user.name);
+      document.getElementById('profile-name').textContent = user.name;
+      const roleEl = document.getElementById('profile-role');
+      roleEl.textContent = user.role;
+      roleEl.classList.toggle('admin', user.role === 'admin');
+
+      form.name.value = user.name;
+      form.email.value = user.email;
+      form.role.value = user.role;
+      document.getElementById('created').value = formatDate(user.createdAt);
+
+      setSession(getToken(), user);
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    if (!name) {
+      showToast('Name cannot be empty.', 'error');
+      return;
+    }
+    const btn = form.querySelector('button[type="submit"]');
+    setButtonLoading(btn, true, 'Saving');
+    try {
+      const res = await api.put('/auth/me', { name });
+      setSession(getToken(), res.data.user);
+      showToast('Profile updated.', 'success');
+      await loadProfile();
+      initNavbar();
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      setButtonLoading(btn, false);
+    }
+  });
+
+  loadProfile();
+</script>
+</body>
+</html>
